@@ -6,7 +6,6 @@
 </template>
 
 <script setup>
-// ... existing code ...
 </script>
 
 <style>
