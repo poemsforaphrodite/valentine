@@ -1,9 +1,11 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 </script>
 
 <template>
-<div>hello valentine</div>
+<div>
+  hello
+</div>
 </template>
 
 <style scoped>
