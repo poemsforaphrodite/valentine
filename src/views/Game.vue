@@ -94,7 +94,7 @@ const userTurn = () => {
 
 const handleCellClick = (rowIndex, colIndex) => {
     if (!gameOver.value) {
-        rollDice();
+        //rollDice();
         userMatrix[rowIndex][colIndex] = diceResult.value;
         destroyOpponentDice(computerMatrix, rowIndex, colIndex);
         checkGameOver();
@@ -128,6 +128,7 @@ const computerTurn = () => {
             destroyOpponentDice(userMatrix, randomCell[0], randomCell[1]);
             checkGameOver();
         }
+        rollDice();
     }
 };
 
