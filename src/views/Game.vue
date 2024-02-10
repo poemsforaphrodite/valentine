@@ -65,6 +65,7 @@ const cols = 3;
 
 const userMatrix = reactive(generateEmptyMatrix(rows, cols));
 const computerMatrix = reactive(generateEmptyMatrix(rows, cols));
+let isUserMatrix = ref(true);
 let diceResult = ref(0);
 let userScore = ref(0);
 let computerScore = ref(0);
@@ -95,12 +96,40 @@ const userTurn = () => {
 const handleCellClick = (rowIndex, colIndex) => {
     if (!gameOver.value) {
         //rollDice();
-        userMatrix[rowIndex][colIndex] = diceResult.value;
+        for (let i = 0; i < rows; i++) {
+            if (!userMatrix[i][colIndex]) {
+                userMatrix[i][colIndex] = diceResult.value;
+                break;
+            }
+        }
+        // userMatrix[rowIndex][colIndex] = diceResult.value;
         destroyOpponentDice(computerMatrix, rowIndex, colIndex);
+        shiftMatrix(userMatrix, rowIndex, colIndex, isUserMatrix); // Pass 'true' to indicate userMatrix
         checkGameOver();
         computerTurn();
     }
 };
+
+const shiftMatrix = (matrix, rowIndex, colIndex, isUsermatrix) => {
+    if (isUsermatrix) {
+        for (let i = 0; i < rows-1; i++) {
+            if (!matrix[i][colIndex]) {
+                matrix[i][colIndex] = matrix[i + 1][colIndex];
+                matrix[i + 1][colIndex] = '';
+            }
+        }
+    } else {
+        for (let i = 2; i < rows-1; i++) {
+            if (!matrix[i][colIndex]) {
+                matrix[i][colIndex] = matrix[i + 1][colIndex];
+                matrix[i + 1][colIndex] = '';
+            }
+        }
+    }
+};
+
+
+
 
 const destroyOpponentDice = (matrix, rowIndex, colIndex) => {
     const valueToDestroy = diceResult.value;
@@ -126,6 +155,7 @@ const computerTurn = () => {
             let randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
             computerMatrix[randomCell[0]][randomCell[1]] = diceResult.value;
             destroyOpponentDice(userMatrix, randomCell[0], randomCell[1]);
+            //shiftMatrix(computerMatrix, randomCell[0], randomCell[1], isUserMatrix); // Pass 'false' to indicate computerMatrix
             checkGameOver();
         }
         rollDice();
