@@ -21,6 +21,7 @@
     margin-bottom: 20px;
     border-bottom: 1px solid var(--primary-color);
     padding-bottom: 10px;
+    font-size: 1.2rem;
   }
   
   .navbar a {
