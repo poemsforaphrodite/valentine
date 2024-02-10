@@ -166,8 +166,10 @@ const determineWinner = () => {
 
 .matrix-container {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    flex-direction: column;
+    /* Set to column for vertical layout */
+    align-items: center;
+    /* Optional: Center the items horizontally */
 }
 
 .matrix {
@@ -185,27 +187,7 @@ const determineWinner = () => {
 }
 
 .user-matrix {
-    background-color: #e6e6e6;
-}
-
-.dice {
-    margin: 20px 0;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-}
-
-.score-container {
-    margin-top: 20px;
-}
-
-.game-over-message {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
+    background-color: #f5f5f5;
 }
 
 table {
@@ -213,29 +195,32 @@ table {
     width: 100%;
 }
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
+td {
+    border: 2px solid #ddd;
+    padding: 16px;
     text-align: center;
+    font-size: 18px;
+    cursor: pointer;
 }
 
-th {
-    background-color: #f2f2f2;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
+h2,
+h3 {
+    color: #2196f3;
 }
 
 button {
+    background-color: #4caf50;
+    color: #fff;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    border: none;
+    border-radius: 4px;
     margin-top: 20px;
 }
 
-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+.score-container {
+    margin-top: 20px;
+    font-size: 18px;
 }
 </style>

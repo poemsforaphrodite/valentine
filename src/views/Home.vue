@@ -2,11 +2,7 @@
     <div class="portfolio">
       <header>
         <h1>Welcome to My Portfolio</h1>
-        <nav>
-          <a href="#about">About</a>
-          <a href="#projects">Projects</a>
-          <a href="/game">Contact</a>
-        </nav>
+        <Navbar/>
       </header>
   
       <section id="about" class="section">
@@ -36,7 +32,7 @@
   </template>
   
   <script setup>
-  // You can add JavaScript code here if needed
+    import Navbar from '../components/Navbar.vue';
   </script>
   
   <style scoped>
