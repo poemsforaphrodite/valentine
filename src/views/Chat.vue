@@ -106,4 +106,49 @@ async function sendMessage() {
     color: white;
     align-self: flex-end;
 }
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .chat-container {
+        padding: 10px;
+    }
+
+    .chat-input input {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .chat-input button {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .system-message,
+    .user-message {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .chat-container {
+        padding: 5px;
+    }
+
+    .chat-input input {
+        padding: 6px;
+        font-size: 0.8em;
+    }
+
+    .chat-input button {
+        padding: 6px;
+        font-size: 0.8em;
+    }
+
+    .system-message,
+    .user-message {
+        padding: 6px;
+        font-size: 0.8em;
+    }
+}
 </style>
