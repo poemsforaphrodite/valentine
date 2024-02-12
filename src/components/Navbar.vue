@@ -4,6 +4,7 @@
     <router-link to="/about">About</router-link>
     <router-link to="/star">Star</router-link>
     <router-link to="/game">Game</router-link>
+    <router-link to="panky">Panky</router-link>
   </nav>
 </template>
 
