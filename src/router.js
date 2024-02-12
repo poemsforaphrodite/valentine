@@ -19,9 +19,9 @@ const routes = [
     }
     ,
     {
-        path: '/panky',
-        name: 'Panky',
-        component: () =>import('./views/Panky.vue')
+        path: '/chat',
+        name: 'chat',
+        component: () =>import('./views/Chat.vue')
     }
     ];
 

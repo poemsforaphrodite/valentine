@@ -33,7 +33,7 @@ async function sendMessage() {
             body: JSON.stringify({
                 model: 'deepseek-chat',
                 messages: [
-                    { role: 'system', content: "You are Panky, an expert AI relationship expert." },
+                    { role: 'system', content: "You are an expert." },
                     userMessage
                 ]
             })
