@@ -89,7 +89,7 @@ onMounted(() => {
 
         // Animate the size and color of the stars to create a twinkling effect
         for (let i = 0; i < particleCount; i++) {
-            sizes[i] = THREE.MathUtils.randFloat(0.1, 6);
+            sizes[i] = THREE.MathUtils.randFloat(0.1, 10);
             colors[i * 3] = THREE.MathUtils.randFloat(0, 1);
             colors[i * 3 + 1] = THREE.MathUtils.randFloat(0, 1);
             colors[i * 3 + 2] = THREE.MathUtils.randFloat(0, 1);

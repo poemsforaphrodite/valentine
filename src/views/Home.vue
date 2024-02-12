@@ -51,7 +51,7 @@
           Managed the training process, including batch sampling from the replay buffer and updating parameters of the
           networks.
         </p>
-        <a href="#">View Project</a>
+        <a href="https://github.com/poemsforaphrodite/deep-reinforcement-projects">View Project</a>
       </div>
     </section>
 
@@ -67,7 +67,7 @@
     </section>
 
     <footer>
-      <p>&copy; 2022 Pushpender Solanki. All rights reserved.</p>
+      <p>&copy; 2024 Pushpender Solanki. All rights reserved.</p>
     </footer>
   </div>
 </template>
