@@ -5,6 +5,7 @@
     <router-link to="/star">Star</router-link>
     <router-link to="/game">Game</router-link>
     <router-link to="/chat">Chat</router-link>
+    <router-link to="/blog">Blog</router-link>
   </nav>
 </template>
 
