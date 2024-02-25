@@ -1,11 +1,11 @@
 <template>
   <nav class="navbar">
     <router-link to="/">Home</router-link>
-    <router-link to="/about">About</router-link>
+    <!--<router-link to="/about">About</router-link> -->
     <router-link to="/star">Star</router-link>
     <router-link to="/game">Game</router-link>
     <router-link to="/chat">Chat</router-link>
-    <router-link to="/blog">Blog</router-link>
+    <!--<router-link to="/blog">Blog</router-link> -->
   </nav>
 </template>
 
