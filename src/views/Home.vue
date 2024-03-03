@@ -76,10 +76,7 @@
 import Navbar from '../components/Navbar.vue';
 </script>
 
-<style scoped>
-/* Your existing styles */
-</style>
-  
+
 <style scoped>
 :root {
   --primary-color: #2c3e50;
