@@ -1,150 +1,199 @@
 <template>
-  <div class="portfolio">
-    <header>
-      <h1>Welcome to My Portfolio</h1>
-      <Navbar />
-    </header>
+  <div class="chat-container">
+      <!-- Display downloaded MP4 video -->
+      <video controls width="400" v-if="downloadedUrl">
+          <source :src="downloadedUrl" type="video/mp4">
+          Your browser does not support the video tag.
+      </video>
 
-    <section id="about" class="section">
-      <h2>About Me</h2>
-      <p>
-        B.TECH(Computer Engineering) 2021-2025<br>
-        Delhi Technological University, New Delhi<br>
-      </p>
-    </section>
-
-    <section id="internships" class="section">
-      <h2>Internships and Work Experience</h2>
-      <div class="internship">
-        <h3>Full Stack Web Developer Intern</h3>
-        <p>June 2023 - August 2023</p>
-        <p>
-          Developed an innovative and responsive fitness and wellness web application using the MERN stack, integrating
-          Zoom and OpenAI APIs while ensuring HIPAA compliance.
-        </p>
-        <p>
-          Seamlessly integrated the OpenAI API to generate personalized workout plans for users based on their fitness
-          goals, preferences, and available equipment, improving user engagement and satisfaction.
-        </p>
-        <p>
-          Implemented a reliable, secure platform for HD video consultations using the Zoom API, ensuring user privacy and
-          HIPAA compliance.
-        </p>
+      <div class="chat-messages">
+          <div v-for="(message, index) in userMessages" :key="index" class="user-message">
+              <p>{{ message.content }}</p>
+          </div>
       </div>
-    </section>
 
-    <section id="projects" class="section">
-      <h2>My Projects</h2>
-      <div class="project">
-        <h3>Multiple Deep Reinforcement Learning Projects</h3>
-        <p>
-          Developed and implemented the Twin Delayed Deep Deterministic Policy Gradient (TD3) algorithm, an actor-critic
-          method for reinforcement learning, to solve complex control tasks in Python.
-        </p>
-        <p>
-          Utilized PyTorch for developing the actor and critic neural networks, ensuring optimal function approximation.
-        </p>
-        <p>
-          Leveraged CUDA for GPU-accelerated training, achieving faster model training times.
-        </p>
-        <p>
-          Managed the training process, including batch sampling from the replay buffer and updating parameters of the
-          networks.
-        </p>
-        <a href="https://github.com/poemsforaphrodite/deep-reinforcement-projects">View Project</a>
+      <!-- User input -->
+      <div class="chat-input">
+          <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type your message...">
       </div>
-    </section>
-
-    <section id="contact" class="section">
-      <h2>Contact Me</h2>
-      <p>
-        <a href="mailto:pushpendersolanki895@gmail.com">Email: pushpendersolanki895@gmail.com</a><br>
-        <a href="https://www.linkedin.com/in/pushpender-solanki/" target="_blank"
-          rel="noopener noreferrer">LinkedIn</a><br>
-        <a href="https://github.com/poemsforaphrodite" target="_blank" rel="noopener noreferrer">GitHub</a><br>
-        <a href="https://www.instagram.com/poemsforaphrodite/" target="_blank" rel="noopener noreferrer">Instagram</a>
-      </p>
-    </section>
-
-    <footer>
-      <p>&copy; 2024 Pushpender Solanki. All rights reserved.</p>
-    </footer>
   </div>
 </template>
 
 <script setup>
-import Navbar from '../components/Navbar.vue';
+import { ref, computed } from 'vue';
+
+const messages = ref([]);
+const newMessage = ref('');
+const DEEPSEEK_API_KEY = 'sk-f0e6fd9443b144fdbbda6f3582ed621f';
+let downloadedUrl = '';
+
+async function sendMessage() {
+  if (newMessage.value.trim() !== '') {
+      const userMessage = { role: 'user', content: newMessage.value.trim() };
+      messages.value.push(userMessage);
+
+      const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+          },
+          body: JSON.stringify({
+              model: 'deepseek-chat',
+              messages: [
+                  { role: 'system', content: "You are an expert." },
+                  userMessage
+              ]
+          })
+      });
+
+      if (response.ok) {
+          const data = await response.json();
+          const systemMessage = { role: 'system', content: data.choices[0].message.content };
+          messages.value.push(systemMessage);
+
+          // Fetch using the response from Deepseek API
+          const dIdResponse = await fetch('https://api.d-id.com/talks', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Basic cHVzaHBlbmRlcnNvbGFua2k4OTVAZ21haWwuY29t:UgWn04MfqbEs-pffRq282'
+              },
+              body: JSON.stringify({
+                  source_url: "https://d-id-public-bucket.s3.amazonaws.com/or-roman.jpg",
+                  script: {
+                      type: "text",
+                      input: data.choices[0].message.content // Using output from Deepseek API
+                  }
+              })
+          });
+
+          if (dIdResponse.ok) {
+              const dIdData = await dIdResponse.json();
+              const talkId = dIdData.id;
+
+              let talkStatus = '';
+              do {
+                  await new Promise(resolve => setTimeout(resolve, 2000));
+                  const talkResponse = await fetch(`https://api.d-id.com/talks/${talkId}`, {
+                      headers: {
+                          'Authorization': 'Basic cHVzaHBlbmRlcnNvbGFua2k4OTVAZ21haWwuY29t:UgWn04MfqbEs-pffRq282'
+                      }
+                  });
+                  const talkData = await talkResponse.json();
+                  talkStatus = talkData.status;
+              } while (talkStatus !== "done");
+
+              const talkResponse = await fetch(`https://api.d-id.com/talks/${talkId}`, {
+                  headers: {
+                      'Authorization': 'Basic cHVzaHBlbmRlcnNvbGFua2k4OTVAZ21haWwuY29t:UgWn04MfqbEs-pffRq282'
+                  }
+              });
+              const talkData = await talkResponse.json();
+              downloadedUrl = talkData.result_url;
+              const systemMessage = { role: 'system', content: `Your talk is ready. You can view it [here](${downloadedUrl}).` };
+              messages.value.push(systemMessage);
+          } else {
+              console.error('Error:', dIdResponse.status);
+          }
+      } else {
+          console.error('Error:', response.status);
+      }
+
+      newMessage.value = '';
+  }
+}
+
+// Computed property to filter out user messages
+const userMessages = computed(() => messages.value.filter(message => message.role === 'user'));
 </script>
 
-
 <style scoped>
-:root {
-  --primary-color: #2c3e50;
-  /* Dark Blue */
-  --secondary-color: #ecf0f1;
-  /* Light Grey */
-  --accent-color: #3498db;
-  /* Blue */
-  --text-color: #333;
-  /* Dark Grey */
-  --light-text-color: #7f8c8d;
-  /* Light Grey */
-}
-
-.portfolio {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  color: var(--text-color);
-  background-color: var(--secondary-color);
-}
-
-header {
+.chat-container {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.chat-input {
+  display: flex;
   align-items: center;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--primary-color);
-  padding-bottom: 10px;
 }
 
-nav a {
-  margin-left: 10px;
-  color: var(--text-color);
-  text-decoration: none;
-}
-
-nav a:hover {
-  color: var(--accent-color);
-}
-
-.section {
-  margin-bottom: 40px;
-}
-
-.project {
-  border: 1px solid var(--primary-color);
+.chat-input input {
+  flex-grow: 1;
   padding: 10px;
-  margin-bottom: 20px;
-  background-color: var(--secondary-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
 }
 
-.project h3 {
-  color: var(--accent-color);
+.chat-input button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.project a {
-  color: var(--accent-color);
-  text-decoration: none;
+.user-message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  align-self: flex-end;
 }
 
-.project a:hover {
-  text-decoration: underline;
+/* Responsive styles */
+@media (max-width: 768px) {
+  .chat-container {
+      padding: 10px;
+  }
+
+  .chat-input input {
+      padding: 8px;
+      font-size: 0.9em;
+  }
+
+  .chat-input button {
+      padding: 8px;
+      font-size: 0.9em;
+  }
+
+  .user-message {
+      padding: 8px;
+      font-size: 0.9em;
+  }
 }
 
-footer {
-  text-align: center;
-  margin-top: 40px;
-  color: var(--light-text-color);
-}</style>
+@media (max-width: 480px) {
+  .chat-container {
+      padding: 5px;
+  }
+
+  .chat-input input {
+      padding: 6px;
+      font-size: 0.8em;
+  }
+
+  .chat-input button {
+      padding: 6px;
+      font-size: 0.8em;
+  }
+
+  .user-message {
+      padding: 6px;
+      font-size: 0.8em;
+  }
+}
+</style>
