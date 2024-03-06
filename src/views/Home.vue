@@ -57,7 +57,7 @@ async function sendMessage() {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': 'Basic cHVzaHBlbmRlcnNvbGFua2k4OTVAZ21haWwuY29t:UgWn04MfqbEs-pffRq282'
+                  'Authorization': 'Basic cHVzaHBlbmRlcnNvbGFua2lfY28yMWE2XzIzQGR0dS5hYy5pbg:Sys_5ijzmwoCSsZSfjqOh'
               },
               body: JSON.stringify({
                   source_url: "https://d-id-public-bucket.s3.amazonaws.com/or-roman.jpg",
