@@ -77,7 +77,7 @@ async function sendMessage() {
                   await new Promise(resolve => setTimeout(resolve, 2000));
                   const talkResponse = await fetch(`https://api.d-id.com/talks/${talkId}`, {
                       headers: {
-                          'Authorization': 'Basic cHVzaHBlbmRlcnNvbGFua2k4OTVAZ21haWwuY29t:UgWn04MfqbEs-pffRq282'
+                          'Authorization': 'Basic cHVzaHBlbmRlcnNvbGFua2lfY28yMWE2XzIzQGR0dS5hYy5pbg:Sys_5ijzmwoCSsZSfjqOh'
                       }
                   });
                   const talkData = await talkResponse.json();
